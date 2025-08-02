@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://dgs0fqojgcmu3"]
+
+[ext_resource type="Script" uid="uid://ctjy0e806j0vk" path="res://entities/car/car.gd" id="1_nh45c"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kkl2f"]
+size = Vector3(1, 1, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_76tdi"]
+size = Vector3(1, 1, 2)
+
+[node name="Car" type="RigidBody3D"]
+script = ExtResource("1_nh45c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_kkl2f")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00250244)
+shape = SubResource("BoxShape3D_76tdi")
+
+[node name="Raycasts" type="Node3D" parent="."]
+
+[node name="ForwardLeft" type="RayCast3D" parent="Raycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1)
+
+[node name="ForwardRight" type="RayCast3D" parent="Raycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -1)
+
+[node name="BackwardRight" type="RayCast3D" parent="Raycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 1)
+
+[node name="BackwardLeft" type="RayCast3D" parent="Raycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1)
+
+[node name="RaycastsRespawn" type="Node3D" parent="."]
+
+[node name="ForwardLeftRespawn" type="RayCast3D" parent="RaycastsRespawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1)
+
+[node name="ForwardRightRespawn" type="RayCast3D" parent="RaycastsRespawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -1)
+
+[node name="BackwardRightRespawn" type="RayCast3D" parent="RaycastsRespawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 1)
+
+[node name="BackwardLeftRespawn" type="RayCast3D" parent="RaycastsRespawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1)

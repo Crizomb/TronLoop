@@ -1,3 +1,26 @@
-[gd_scene format=3 uid="uid://bd8skoxlvujam"]
+[gd_scene load_steps=5 format=3 uid="uid://bd8skoxlvujam"]
+
+[ext_resource type="PackedScene" uid="uid://d5co10opkoxg" path="res://entities/road/road.tscn" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://dgs0fqojgcmu3" path="res://entities/car/car.tscn" id="2_0wfyh"]
+[ext_resource type="PhysicsMaterial" uid="uid://doaljsb6138cp" path="res://entities/car/car_physic_mat.tres" id="3_sugp2"]
+
+[sub_resource type="Environment" id="Environment_0wfyh"]
 
 [node name="Main" type="Node3D"]
+
+[node name="Road" parent="." instance=ExtResource("1_o5qli")]
+road_width = 3.0
+
+[node name="Car" parent="." instance=ExtResource("2_0wfyh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0846112, 3.64068, -0.427136)
+mass = 10.0
+physics_material_override = ExtResource("3_sugp2")
+
+[node name="Camera3D" type="Camera3D" parent="Car"]
+transform = Transform3D(-0.995019, 0, -0.0996845, -0.0423712, 0.905169, 0.422936, 0.0902313, 0.425053, -0.90066, 0.00947832, 1.60507, -2.49832)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0wfyh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.903903, -0.229357, 0.361046, 0, 0.844085, 0.53621, -0.427737, -0.484682, 0.762971, 0, 3.75849, 0)
