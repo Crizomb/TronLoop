@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://caolvlv4uvi04"]
+
+[ext_resource type="Script" uid="uid://dxswi3yuxexve" path="res://entities/checkpoint/checkpoint.gd" id="1_ywa0e"]
+[ext_resource type="Material" uid="uid://5vg20wpsk85u" path="res://entities/checkpoint/checkpoint_mat.tres" id="2_ha6r5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gkifo"]
+size = Vector3(15, 5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ywa0e"]
+material = ExtResource("2_ha6r5")
+size = Vector3(15, 5, 1)
+
+[node name="Checkpoint" type="Area3D"]
+script = ExtResource("1_ywa0e")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_gkifo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_ywa0e")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

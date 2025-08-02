@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cu5r7oxtqa2c0"]
+
+[ext_resource type="Script" uid="uid://dp4qacjfhtyul" path="res://entities/checkpoint/check_point_manager.gd" id="1_g2cn0"]
+
+[node name="CheckPointManager" type="Node"]
+script = ExtResource("1_g2cn0")

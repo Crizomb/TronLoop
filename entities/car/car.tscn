@@ -1,38 +1,48 @@
-[gd_scene load_steps=4 format=3 uid="uid://dgs0fqojgcmu3"]
+[gd_scene load_steps=6 format=3 uid="uid://dgs0fqojgcmu3"]
 
 [ext_resource type="Script" uid="uid://ctjy0e806j0vk" path="res://entities/car/car.gd" id="1_nh45c"]
+[ext_resource type="PackedScene" uid="uid://drrl25ujbosbr" path="res://entities/car/tron_moto_lowpoly/scene.gltf" id="2_1ang0"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_kkl2f"]
-size = Vector3(1, 1, 2)
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1ang0"]
+friction = 0.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_76tdi"]
-size = Vector3(1, 1, 2)
+size = Vector3(1, 1, 2.2)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_yotxw"]
+height = 1.1
 
 [node name="Car" type="RigidBody3D"]
+mass = 10.0
+physics_material_override = SubResource("PhysicsMaterial_1ang0")
 script = ExtResource("1_nh45c")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_kkl2f")
+[node name="ForwardLeft" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.435121, -1)
+
+[node name="ForwardRight" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.435121, -1)
+
+[node name="BackwardRight" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.435121, 1)
+
+[node name="BackwardLeft" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.435121, 1)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00250244)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
 shape = SubResource("BoxShape3D_76tdi")
 
-[node name="Raycasts" type="Node3D" parent="."]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 1)
+shape = SubResource("CylinderShape3D_yotxw")
 
-[node name="ForwardLeft" type="RayCast3D" parent="Raycasts"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1)
-
-[node name="ForwardRight" type="RayCast3D" parent="Raycasts"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -1)
-
-[node name="BackwardRight" type="RayCast3D" parent="Raycasts"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 1)
-
-[node name="BackwardLeft" type="RayCast3D" parent="Raycasts"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1)
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, -1.2)
+shape = SubResource("CylinderShape3D_yotxw")
 
 [node name="RaycastsRespawn" type="Node3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="ForwardLeftRespawn" type="RayCast3D" parent="RaycastsRespawn"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1)
@@ -45,3 +55,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 1)
 
 [node name="BackwardLeftRespawn" type="RayCast3D" parent="RaycastsRespawn"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1)
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_1ang0")]
+transform = Transform3D(-0.35, 0, -3.0598e-08, 0, 0.35, 0, 3.0598e-08, 0, -0.35, 0.0317484, -0.52664, 0)
+
+[node name="CameraFollowPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31962, -2.93594)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

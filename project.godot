@@ -15,6 +15,10 @@ run/main_scene="uid://bd8skoxlvujam"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+CheckPointManager="*res://entities/checkpoint/check_point_manager.gd"
+
 [input]
 
 forward={
@@ -49,7 +53,10 @@ restart={
 
 [physics]
 
+3d/run_on_separate_thread=true
 3d/physics_engine="Jolt Physics"
+3d/default_gravity=20.0
+3d/solver/contact_max_allowed_penetration=0.05
 
 [rendering]
 

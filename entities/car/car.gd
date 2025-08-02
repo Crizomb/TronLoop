@@ -1,6 +1,8 @@
 extends RigidBody3D
 class_name Car
 
+@export var road_path : RoadPath
+
 @export var forward_force: float = 100.0
 @export var backward_force: float = 50.0
 @export var steer_speed: float = 2.0
@@ -9,10 +11,10 @@ class_name Car
 @export var lateral_velocity_start_drift_threshold: float = 10.0
 @export var lateral_velocity_total_drift_threshold: float = 15.0
 
-@onready var forward_left: RayCast3D = $Raycasts/ForwardLeft
-@onready var forward_right: RayCast3D = $Raycasts/ForwardRight
-@onready var backward_right: RayCast3D = $Raycasts/BackwardRight
-@onready var backward_left: RayCast3D = $Raycasts/BackwardLeft
+@onready var forward_left: RayCast3D = $ForwardLeft
+@onready var forward_right: RayCast3D = $ForwardRight
+@onready var backward_right: RayCast3D = $BackwardRight
+@onready var backward_left: RayCast3D = $BackwardLeft
 
 @onready var forward_left_respawn: RayCast3D = $RaycastsRespawn/ForwardLeftRespawn
 @onready var forward_right_respawn: RayCast3D = $RaycastsRespawn/ForwardRightRespawn
@@ -31,9 +33,12 @@ var respawn_pos : Vector3
 var thread: Thread = Thread.new()
 var steer_input = 0.0
 
-var cheat := false
 var air_time := 0.0
 
+
+func custom_gravity() -> Vector3:
+	var attractor = road_path.to_global(road_path.curve.get_closest_point(road_path.to_local(position)))
+	return (attractor - position).normalized()
 
 func return_to_road():
 	position = respawn_pos + 3*Vector3.UP
@@ -58,10 +63,13 @@ func _physics_process(delta: float) -> void:
 	var is_all_wheel_on_floor := backward_left_respawn.is_colliding() && backward_right_respawn.is_colliding() && forward_left_respawn.is_colliding() && forward_right_respawn.is_colliding()
 	var is_flat : bool = transform.basis.y.dot(Vector3.UP) > 0.9
 	
+	# Doing custom gravity like a chad
+	PhysicsServer3D.area_set_param(get_viewport().find_world_3d().space, PhysicsServer3D.AREA_PARAM_GRAVITY_VECTOR, custom_gravity())
+	
 	if is_all_wheel_on_floor && is_flat:
 		respawn_pos = position
 
-	if !is_on_floor && !cheat:
+	if !is_on_floor:
 		#$DriftParticles.emitting = false
 		#$DriftParticles2.emitting = false
 		#AudioServer.set_bus_volume_db(5, -80)
@@ -70,10 +78,6 @@ func _physics_process(delta: float) -> void:
 			return_to_road()
 		return
 	air_time = 0.0
-	if cheat && Input.is_key_pressed(KEY_SPACE):
-		linear_velocity.y += 20*delta
-	if cheat:
-		forward_force = 500
 		
 	# Movement
 	if move_input > 0.0:
@@ -117,5 +121,3 @@ func _physics_process(delta: float) -> void:
 	apply_central_force(lateral_friction_force)
 	
 	
-
-		
