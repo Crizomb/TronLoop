@@ -1,0 +1,100 @@
+[gd_scene load_steps=12 format=3 uid="uid://cr54uowve74h0"]
+
+[ext_resource type="Shader" uid="uid://tqpr7f3nr72k" path="res://entities/sky/sky.gdshader" id="1_xdvgc"]
+[ext_resource type="PackedScene" uid="uid://drrl25ujbosbr" path="res://entities/car/tron_moto_lowpoly/scene.gltf" id="2_upctu"]
+[ext_resource type="Script" uid="uid://dlrn4dviqqsdl" path="res://entities/mainMenu/moto_rotate.gd" id="3_11y2r"]
+[ext_resource type="Script" uid="uid://cntibc2ih0im7" path="res://entities/mainMenu/main_menu.gd" id="4_b6cxs"]
+[ext_resource type="LabelSettings" uid="uid://cru5yoau1mluh" path="res://fonts/BigTextLabelSettings.tres" id="4_o0tnf"]
+[ext_resource type="Theme" uid="uid://desmbsje23ubj" path="res://fonts/DefautTheme.tres" id="5_jmdev"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_upctu"]
+noise_type = 2
+frequency = 0.1
+fractal_type = 2
+cellular_distance_function = 3
+cellular_return_type = 3
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tbgi4"]
+noise = SubResource("FastNoiseLite_upctu")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_11y2r"]
+shader = ExtResource("1_xdvgc")
+shader_parameter/color_env = Color(0, 0.466667, 0.694118, 1)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_tbgi4")
+shader_parameter/noise_power = 0.1
+shader_parameter/speed = 0.003
+
+[sub_resource type="Sky" id="Sky_jyhfs"]
+sky_material = SubResource("ShaderMaterial_11y2r")
+
+[sub_resource type="Environment" id="Environment_o0tnf"]
+background_mode = 2
+sky = SubResource("Sky_jyhfs")
+
+[node name="Menu" type="Node3D"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_b6cxs")
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Tron Loop"
+label_settings = ExtResource("4_o0tnf")
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -210.0
+offset_right = 81.0
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button1" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("5_jmdev")
+text = "Level 1"
+
+[node name="Button2" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("5_jmdev")
+text = "Level 2
+"
+
+[node name="Button3" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("5_jmdev")
+text = "Level 3"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_o0tnf")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_upctu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.291408, -4, -12.2677)
+script = ExtResource("3_11y2r")
+
+[connection signal="pressed" from="Control/VBoxContainer/Button1" to="Control" method="_on_button_1_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Button2" to="Control" method="_on_button_2_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Button3" to="Control" method="_on_button_3_pressed"]

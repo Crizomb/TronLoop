@@ -37,8 +37,15 @@ var air_time := 0.0
 
 
 func custom_gravity() -> Vector3:
-	var attractor = road_path.to_global(road_path.curve.get_closest_point(road_path.to_local(position)))
-	return (attractor - position).normalized()
+	var closest_offset = road_path.curve.get_closest_offset(road_path.to_local(position))
+	var closest_transform = road_path.curve.sample_baked_with_rotation(closest_offset, true, true)
+	var closest_point = road_path.to_global(closest_transform.origin)
+	#var project_plane = Plane(closest_transform.basis.y.normalized(), closest_point)
+	#print(closest_point)
+	#return -project_plane.project(position).normalized() * 0.1
+	#var attractor = road_path.to_global(road_path.curve.get_closest_point(road_path.to_local(position)))
+	
+	return -closest_transform.basis.y
 
 func return_to_road():
 	position = respawn_pos + 3*Vector3.UP
@@ -70,9 +77,6 @@ func _physics_process(delta: float) -> void:
 		respawn_pos = position
 
 	if !is_on_floor:
-		#$DriftParticles.emitting = false
-		#$DriftParticles2.emitting = false
-		#AudioServer.set_bus_volume_db(5, -80)
 		air_time += delta
 		if air_time > 1.5:
 			return_to_road()
@@ -108,12 +112,6 @@ func _physics_process(delta: float) -> void:
 	)
 	drift_factor = clamp(drift_factor, 0, 1)
 	
-	#$DriftParticles.emitting = drift_factor < 1 && is_on_floor
-	#$DriftParticles2.emitting = drift_factor < 1 && is_on_floor
-	#if drift_factor < 1 && is_on_floor:
-		#AudioServer.set_bus_volume_db(5, lerp(-15, -30, drift_factor))
-	#else:
-		#AudioServer.set_bus_volume_db(5, -80)
 	
 	steer_speed = lerp(steer_speed * 2.0, base_steer_speed, drift_factor)
 

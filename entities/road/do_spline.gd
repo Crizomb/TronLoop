@@ -2,7 +2,7 @@
 extends Path3D
 class_name RoadPath
 @export_tool_button("update_control_points") var action = update_control_points
-var tilt_scale : float = 0.0005
+@export var tilt_scale : float = 0.0005
 
 func modulo_get_point_position(i):
 	return curve.get_point_position(posmod(i, curve.point_count))

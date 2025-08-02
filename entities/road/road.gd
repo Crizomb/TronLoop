@@ -37,8 +37,8 @@ func generate_mesh():
 		var dist2 = float(i + 1) * segment_length
 		
 		
-		var t1 := curve.sample_baked_with_rotation(dist1, true)
-		var t2 := curve.sample_baked_with_rotation(dist2, true)
+		var t1 := curve.sample_baked_with_rotation(dist1, true, true)
+		var t2 := curve.sample_baked_with_rotation(dist2, true, true)
 
 		var fwd1 = t1.basis.z.normalized()
 		var fwd2 = t2.basis.z.normalized()
