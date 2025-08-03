@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://cr54uowve74h0"]
 
 [ext_resource type="Shader" uid="uid://tqpr7f3nr72k" path="res://world_env/sky/sky_1.gdshader" id="1_xdvgc"]
-[ext_resource type="PackedScene" uid="uid://drrl25ujbosbr" path="res://entities/car/tron_moto_lowpoly/scene.gltf" id="2_upctu"]
 [ext_resource type="Script" uid="uid://dlrn4dviqqsdl" path="res://entities/mainMenu/moto_rotate.gd" id="3_11y2r"]
 [ext_resource type="Script" uid="uid://cntibc2ih0im7" path="res://entities/mainMenu/main_menu.gd" id="4_b6cxs"]
 [ext_resource type="LabelSettings" uid="uid://cru5yoau1mluh" path="res://fonts/BigTextLabelSettings.tres" id="4_o0tnf"]
+[ext_resource type="PackedScene" uid="uid://npanejthded5" path="res://entities/car/tron_moto_lowpoly/sketchfab_scene.tscn" id="5_b6cxs"]
 [ext_resource type="Theme" uid="uid://desmbsje23ubj" path="res://fonts/DefautTheme.tres" id="5_jmdev"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_upctu"]
@@ -91,8 +91,8 @@ environment = SubResource("Environment_o0tnf")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 
-[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_upctu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.291408, -4, -12.2677)
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("5_b6cxs")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, -3.23165, -7.279)
 script = ExtResource("3_11y2r")
 
 [connection signal="pressed" from="Control/VBoxContainer/Button1" to="Control" method="_on_button_1_pressed"]
