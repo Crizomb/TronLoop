@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dgs0fqojgcmu3" path="res://entities/car/car.tscn" id="5_44saj"]
 [ext_resource type="PhysicsMaterial" uid="uid://doaljsb6138cp" path="res://entities/car/car_physic_mat.tres" id="6_7mbro"]
 [ext_resource type="Script" uid="uid://bdhupx1blbgwo" path="res://entities/camera/camera_3d.gd" id="7_ff6ho"]
-[ext_resource type="Shader" uid="uid://tqpr7f3nr72k" path="res://entities/sky/sky.gdshader" id="8_7yos8"]
+[ext_resource type="Shader" uid="uid://tqpr7f3nr72k" path="res://world_env/sky/sky_1.gdshader" id="8_7yos8"]
 [ext_resource type="PackedScene" uid="uid://caolvlv4uvi04" path="res://entities/checkpoint/checkpoint.tscn" id="9_5jxlq"]
 
 [sub_resource type="Curve3D" id="Curve3D_p7e7j"]
@@ -86,13 +86,12 @@ shape = SubResource("ConcavePolygonShape3D_choun")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0846112, 0.37944, -0.427136)
 physics_material_override = ExtResource("6_7mbro")
-continuous_cd = true
 road_path = NodePath("../Road/Track")
 base_lateral_friction = 100.0
 lateral_velocity_start_drift_threshold = 100.0
 lateral_velocity_total_drift_threshold = 200.0
 
-[node name="CameraFollowPoint" parent="Car" index="9"]
+[node name="CameraFollowPoint" parent="Car" index="7"]
 transform = Transform3D(-1, 0, -8.74228e-08, -3.12697e-08, 0.933843, 0.357684, 8.16391e-08, 0.357684, -0.933843, 0, 1.48636, -2.93594)
 
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("follow_point")]

@@ -16,7 +16,7 @@ func update_control_points():
 		var next = modulo_get_point_position(i + 1) - modulo_get_point_position(i)
 		var prev_dir = prev.normalized()
 		var next_dir = next.normalized()
-		var tangent_length = next.length() / 3 
+		var tangent_length = next.length() / 2
 		var tangent = (prev_dir + next_dir)
 		
 		tangent.y = 0

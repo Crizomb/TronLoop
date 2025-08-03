@@ -2,4 +2,6 @@
 
 [resource]
 transparency = 1
+blend_mode = 1
 albedo_color = Color(0.396078, 1, 0.686275, 0.270588)
+emission = Color(0.396078, 1, 0.686275, 0.270588)

@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://bbl6ouj0ew23c"]
+
+[ext_resource type="Script" uid="uid://cxju8eq6w5rbt" path="res://entities/gameUI/game_ui.gd" id="1_fyng4"]
+[ext_resource type="LabelSettings" uid="uid://dyfwkfdm7affw" path="res://fonts/ui_label_set.tres" id="2_4gmqh"]
+[ext_resource type="LabelSettings" uid="uid://c33hoau8vc0q7" path="res://fonts/little_label_settings.tres" id="3_oo04r"]
+
+[node name="GameUi" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fyng4")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -192.0
+offset_top = 30.0
+offset_right = -46.0
+offset_bottom = 112.0
+grow_horizontal = 0
+
+[node name="LapLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Lap 1/3"
+label_settings = ExtResource("2_4gmqh")
+
+[node name="TimeLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "57 s"
+label_settings = ExtResource("2_4gmqh")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 1
+offset_right = 147.0
+offset_bottom = 66.0
+
+[node name="LapLabel" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+text = "Press 
+C to respawn
+R to restart"
+label_settings = ExtResource("3_oo04r")

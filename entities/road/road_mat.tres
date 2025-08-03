@@ -7,7 +7,7 @@ domain_warp_enabled = true
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l5fpm"]
 seamless = true
 as_normal_map = true
-bump_strength = 2.0
+bump_strength = 1.0
 noise = SubResource("FastNoiseLite_ma6g7")
 
 [resource]

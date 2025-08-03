@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://n4qqt180m2fo"]
+
+[ext_resource type="LabelSettings" uid="uid://cru5yoau1mluh" path="res://fonts/BigTextLabelSettings.tres" id="1_qk15a"]
+[ext_resource type="Script" uid="uid://cm6k4bbs2qbca" path="res://entities/winMenu/win_menu.gd" id="1_wb05w"]
+[ext_resource type="Theme" uid="uid://desmbsje23ubj" path="res://fonts/DefautTheme.tres" id="2_2te7r"]
+
+[node name="WinMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wb05w")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Your time :"
+label_settings = ExtResource("1_qk15a")
+
+[node name="Time" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "56s"
+label_settings = ExtResource("1_qk15a")
+horizontal_alignment = 1
+
+[node name="MainMenu" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_2te7r")
+text = "MainMenu"
+
+[connection signal="pressed" from="VBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]

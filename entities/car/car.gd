@@ -28,7 +28,7 @@ var current_steer_speed = base_steer_speed
 var last_steer_input := 0.0
 var rotation_angle := 0.0
 
-var respawn_pos : Vector3 
+var respawn_trans : Transform3D 
 
 var thread: Thread = Thread.new()
 var steer_input = 0.0
@@ -40,17 +40,14 @@ func custom_gravity() -> Vector3:
 	var closest_offset = road_path.curve.get_closest_offset(road_path.to_local(position))
 	var closest_transform = road_path.curve.sample_baked_with_rotation(closest_offset, true, true)
 	var closest_point = road_path.to_global(closest_transform.origin)
-	#var project_plane = Plane(closest_transform.basis.y.normalized(), closest_point)
-	#print(closest_point)
-	#return -project_plane.project(position).normalized() * 0.1
-	#var attractor = road_path.to_global(road_path.curve.get_closest_point(road_path.to_local(position)))
 	
 	return -closest_transform.basis.y
 
 func return_to_road():
-	position = respawn_pos + 3*Vector3.UP
-	rotation.z = 0
-	rotation.x = 0
+	var closest_offset = road_path.curve.get_closest_offset(road_path.to_local(position))
+	var closest_transform = road_path.curve.sample_baked_with_rotation(closest_offset, true, true)
+	transform = respawn_trans
+	position += closest_transform.basis.y * 2.0
 	
 	linear_velocity = Vector3.ZERO
 	angular_velocity = Vector3.ZERO
@@ -61,6 +58,9 @@ func _process(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("restart"):
 		return_to_road()
+		
+	if Input.is_action_just_pressed("hardRestart"):
+		get_tree().reload_current_scene()
 
 func _physics_process(delta: float) -> void:
 	var move_input := Input.get_axis("back", "forward")
@@ -68,17 +68,16 @@ func _physics_process(delta: float) -> void:
 	steer_input = lerpf(steer_input, steer_input_brut, 0.1)
 	var is_on_floor := backward_left_respawn.is_colliding() || backward_right_respawn.is_colliding() || forward_left_respawn.is_colliding() || forward_right_respawn.is_colliding()
 	var is_all_wheel_on_floor := backward_left_respawn.is_colliding() && backward_right_respawn.is_colliding() && forward_left_respawn.is_colliding() && forward_right_respawn.is_colliding()
-	var is_flat : bool = transform.basis.y.dot(Vector3.UP) > 0.9
 	
 	# Doing custom gravity like a chad
 	PhysicsServer3D.area_set_param(get_viewport().find_world_3d().space, PhysicsServer3D.AREA_PARAM_GRAVITY_VECTOR, custom_gravity())
 	
-	if is_all_wheel_on_floor && is_flat:
-		respawn_pos = position
+	if is_all_wheel_on_floor:
+		respawn_trans = transform
 
 	if !is_on_floor:
 		air_time += delta
-		if air_time > 1.5:
+		if air_time > 3:
 			return_to_road()
 		return
 	air_time = 0.0
@@ -92,30 +91,18 @@ func _physics_process(delta: float) -> void:
 
 	# Rotation
 	rotation_angle = steer_input * delta
-	#angular_velocity = steer_input * delta * global_transform.basis.y * 30.0
 	rotate(global_transform.basis.y, rotation_angle)
 	
-	# Drift Simulation
 	var velocity = linear_velocity
 	var forward_dir = global_transform.basis.z
 	if forward_dir.length_squared() == 0.0:
-		return # skip drift this frame if something is invalid
+		return 
 	forward_dir = forward_dir.normalized()
 
 	var forward_velocity = forward_dir * velocity.dot(forward_dir)
 	var lateral_velocity = velocity - forward_velocity
-	
-	var drift_factor = inverse_lerp(
-	lateral_velocity_total_drift_threshold,
-	lateral_velocity_start_drift_threshold,
-	lateral_velocity.length()
-	)
-	drift_factor = clamp(drift_factor, 0, 1)
-	
-	
-	steer_speed = lerp(steer_speed * 2.0, base_steer_speed, drift_factor)
 
-	var lateral_friction_force = -lateral_velocity * base_lateral_friction * drift_factor
+	var lateral_friction_force = -lateral_velocity * base_lateral_friction
 	apply_central_force(lateral_friction_force)
 	
 	

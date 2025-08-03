@@ -1,11 +1,13 @@
 extends Control
 
+func _ready():
+	MusicManager.launch_menu_music()
 
 func _on_button_1_pressed() -> void:
-	get_tree().change_scene_to_packed(CheckPointManager.LEVELS[0])
+	GameManager.launch_level(0)
 
 func _on_button_2_pressed() -> void:
-	get_tree().change_scene_to_packed(CheckPointManager.LEVELS[0])
+	GameManager.launch_level(1)
 
 func _on_button_3_pressed() -> void:
-	get_tree().change_scene_to_packed(CheckPointManager.LEVELS[0])
+	GameManager.launch_level(2)

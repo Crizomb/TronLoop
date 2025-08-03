@@ -1,14 +1,20 @@
-[gd_scene load_steps=18 format=4 uid="uid://da5cjjk7vasft"]
+[gd_scene load_steps=24 format=4 uid="uid://da5cjjk7vasft"]
 
+[ext_resource type="PackedScene" uid="uid://bbl6ouj0ew23c" path="res://entities/gameUI/gameUI.tscn" id="1_5ntmo"]
 [ext_resource type="PhysicsMaterial" uid="uid://xghhl0tserq3" path="res://entities/road/road_phy_mat.tres" id="1_conm7"]
+[ext_resource type="PackedScene" uid="uid://cu5r7oxtqa2c0" path="res://entities/checkpoint/CheckPointManager.tscn" id="1_nfihu"]
 [ext_resource type="Script" uid="uid://bgt66573ipmub" path="res://entities/road/road.gd" id="2_d3jkd"]
 [ext_resource type="Material" uid="uid://qq8yw26i32k4" path="res://entities/road/road_mat.tres" id="3_u3awl"]
 [ext_resource type="Script" uid="uid://bdw7xdf1lc3ud" path="res://entities/road/do_spline.gd" id="4_2ku1j"]
 [ext_resource type="PackedScene" uid="uid://dgs0fqojgcmu3" path="res://entities/car/car.tscn" id="5_f31uk"]
 [ext_resource type="PhysicsMaterial" uid="uid://doaljsb6138cp" path="res://entities/car/car_physic_mat.tres" id="6_gnai3"]
 [ext_resource type="Script" uid="uid://bdhupx1blbgwo" path="res://entities/camera/camera_3d.gd" id="7_i8kv5"]
-[ext_resource type="Shader" uid="uid://tqpr7f3nr72k" path="res://entities/sky/sky.gdshader" id="8_dxn3v"]
+[ext_resource type="Shader" uid="uid://tqpr7f3nr72k" path="res://world_env/sky/sky_1.gdshader" id="8_dxn3v"]
 [ext_resource type="PackedScene" uid="uid://caolvlv4uvi04" path="res://entities/checkpoint/checkpoint.tscn" id="9_14jow"]
+[ext_resource type="Material" uid="uid://cx7p36k3dewle" path="res://entities/checkpoint/checkpoint_start_mat.tres" id="10_jprdt"]
+[ext_resource type="PackedScene" uid="uid://dlmjehxav11dx" path="res://entities/pauseMenu/pauseMenu.tscn" id="11_nkeig"]
+[ext_resource type="PackedScene" uid="uid://n4qqt180m2fo" path="res://entities/winMenu/winMenu.tscn" id="13_lgguw"]
+[ext_resource type="PackedScene" uid="uid://6i2l1pc0hcxd" path="res://world_env/directional_light_3d.tscn" id="15_ps2vj"]
 
 [sub_resource type="Curve3D" id="Curve3D_p7e7j"]
 closed = true
@@ -86,13 +92,12 @@ shape = SubResource("ConcavePolygonShape3D_5ntmo")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0846112, 0.37944, -0.427136)
 physics_material_override = ExtResource("6_gnai3")
-continuous_cd = true
 road_path = NodePath("../Road/Track")
 base_lateral_friction = 100.0
 lateral_velocity_start_drift_threshold = 100.0
 lateral_velocity_total_drift_threshold = 200.0
 
-[node name="CameraFollowPoint" parent="Car" index="9"]
+[node name="CameraFollowPoint" parent="Car" index="6"]
 transform = Transform3D(-1, 0, -8.74228e-08, -3.12697e-08, 0.933843, 0.357684, 8.16391e-08, 0.357684, -0.933843, 0, 1.48636, -2.93594)
 
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("follow_point")]
@@ -103,13 +108,13 @@ follow_point = NodePath("../Car/CameraFollowPoint")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0wfyh")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.903903, -0.229357, 0.361046, 0, 0.844085, 0.53621, -0.427737, -0.484682, 0.762971, 0, 3.75849, 0)
-
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="Checkpoint" parent="Node3D" instance=ExtResource("9_14jow")]
 transform = Transform3D(0.850073, 0.270046, 0.452163, -0.238417, 0.962847, -0.126816, -0.46961, 0, 0.882874, 5.28381, 2.15491, 9.98221)
+
+[node name="MeshInstance3D" parent="Node3D/Checkpoint" index="1"]
+material_override = ExtResource("10_jprdt")
 
 [node name="Checkpoint2" parent="Node3D" instance=ExtResource("9_14jow")]
 transform = Transform3D(0.0171557, -2.90905e-10, 0.999853, -0.400002, 0.916488, 0.00686333, -0.916354, -0.400061, 0.015723, 156.589, 2.06197, 108.917)
@@ -119,4 +124,22 @@ check_point_id = 1
 transform = Transform3D(0.456725, 0, 0.889608, 0, 1, 0, -0.889608, 0, 0.456725, 156.589, 2.27711, -34.5388)
 check_point_id = 2
 
+[node name="GameUi" parent="." instance=ExtResource("1_5ntmo")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("11_nkeig")]
+
+[node name="WinMenu" parent="." instance=ExtResource("13_lgguw")]
+visible = false
+
+[node name="CheckPointManager" parent="." instance=ExtResource("1_nfihu")]
+
+[node name="DirectionalLight3D" parent="." instance=ExtResource("15_ps2vj")]
+transform = Transform3D(0.903903, -0.229357, 0.361046, 0, 0.844085, 0.53621, -0.427737, -0.484682, 0.762971, 13.1045, 0, -3.82377)
+
+[connection signal="end_track" from="CheckPointManager" to="WinMenu" method="_on_check_point_manager_end_track"]
+[connection signal="new_lap" from="CheckPointManager" to="GameUi" method="_on_check_point_manager_new_lap"]
+
 [editable path="Car"]
+[editable path="Node3D/Checkpoint"]
+[editable path="GameUi"]
+[editable path="WinMenu"]
