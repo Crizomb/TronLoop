@@ -1,10 +1,11 @@
 extends Control
-@onready var game_ui: GameUI = $"../GameUi"
+
+@export var timeManager : TimeManager
 @onready var time_label: Label = $VBoxContainer/Time
 
 
 func _on_check_point_manager_end_track() -> void:
-	time_label.text = str(round(game_ui.time*100)/100)+"s"
+	time_label.text = str(round(timeManager.time*100)/100)+"s"
 	show()
 	get_tree().paused = true
 

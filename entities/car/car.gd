@@ -1,7 +1,7 @@
 extends RigidBody3D
 class_name Car
 
-@export var road_path : RoadPath
+@export var road_path : SplinePath
 
 @export var forward_force: float = 100.0
 @export var backward_force: float = 50.0

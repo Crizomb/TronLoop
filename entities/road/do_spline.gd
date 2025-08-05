@@ -1,6 +1,6 @@
 @tool
 extends Path3D
-class_name RoadPath
+class_name SplinePath
 @export_tool_button("update_control_points") var action = update_control_points
 @export var tilt_scale : float = 0.0005
 

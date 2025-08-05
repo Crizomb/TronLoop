@@ -5,7 +5,7 @@ class_name Road
 @export_tool_button("create_mesh") var action_generate = generate_mesh
 @export_tool_button("clear_all") var action_clear = clear_all
 
-@export var track : RoadPath
+@export var track : SplinePath
 @export var road_mesh_instance : MeshInstance3D
 @export var road_shape : CollisionShape3D
 @export var road_material : BaseMaterial3D
