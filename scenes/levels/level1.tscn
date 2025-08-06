@@ -135,16 +135,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0846112, 0.37944, -0.427136
 physics_material_override = ExtResource("6_gnai3")
 road_path = NodePath("../Road/Track")
 base_lateral_friction = 100.0
-lateral_velocity_start_drift_threshold = 100.0
-lateral_velocity_total_drift_threshold = 200.0
 
 [node name="CameraFollowPoint" parent="Car" index="6"]
 transform = Transform3D(-1, 0, -8.74228e-08, -3.12697e-08, 0.933843, 0.357684, 8.16391e-08, 0.357684, -0.933843, 0, 1.48636, -2.93594)
 
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("follow_point")]
+[node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.995019, -1.11202e-08, -0.0996845, -0.0423712, 0.905169, 0.422936, 0.0902313, 0.425053, -0.90066, 0.0940895, 1.90292, -3.12075)
 script = ExtResource("7_i8kv5")
-follow_point = NodePath("../Car/CameraFollowPoint")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0wfyh")

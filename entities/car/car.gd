@@ -8,8 +8,6 @@ class_name Car
 @export var steer_speed: float = 2.0
 
 @export var base_lateral_friction: float = 5.0
-@export var lateral_velocity_start_drift_threshold: float = 10.0
-@export var lateral_velocity_total_drift_threshold: float = 15.0
 
 @onready var forward_left: RayCast3D = $ForwardLeft
 @onready var forward_right: RayCast3D = $ForwardRight

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=4 uid="uid://c3mood6wrgggw"]
+[gd_scene load_steps=28 format=4 uid="uid://c3mood6wrgggw"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://xghhl0tserq3" path="res://entities/road/road_phy_mat.tres" id="1_7gsxw"]
 [ext_resource type="Script" uid="uid://bgt66573ipmub" path="res://entities/road/road.gd" id="2_quo62"]
@@ -13,9 +13,11 @@
 [ext_resource type="PackedScene" uid="uid://bbl6ouj0ew23c" path="res://entities/gameUI/gameUI.tscn" id="11_ujhos"]
 [ext_resource type="PackedScene" uid="uid://dlmjehxav11dx" path="res://entities/pauseMenu/pauseMenu.tscn" id="12_rd3p3"]
 [ext_resource type="PackedScene" uid="uid://n4qqt180m2fo" path="res://entities/winMenu/winMenu.tscn" id="13_kfo6a"]
+[ext_resource type="PackedScene" uid="uid://d453m6wc7v0e" path="res://entities/startCounter/StartCounter.tscn" id="14_bbgq5"]
 [ext_resource type="PackedScene" uid="uid://cu5r7oxtqa2c0" path="res://entities/checkpoint/CheckPointManager.tscn" id="14_p1hka"]
 [ext_resource type="PackedScene" uid="uid://mkchrw0fla7r" path="res://entities/timeManager/timeManager.tscn" id="15_4u804"]
 [ext_resource type="PackedScene" uid="uid://6i2l1pc0hcxd" path="res://world_env/directional_light_3d.tscn" id="15_8cdjg"]
+[ext_resource type="PackedScene" uid="uid://b5qovp8ccycse" path="res://entities/preview_ui/preview_ui.tscn" id="15_u4oya"]
 
 [sub_resource type="Curve3D" id="Curve3D_4u804"]
 closed = true
@@ -107,19 +109,19 @@ shape = SubResource("ConcavePolygonShape3D_5ntmo")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0846112, 0.37944, -0.427136)
 physics_material_override = ExtResource("6_yw11j")
+freeze = true
 road_path = NodePath("../Road/Track")
 base_lateral_friction = 100.0
-lateral_velocity_start_drift_threshold = 100.0
-lateral_velocity_total_drift_threshold = 200.0
 
 [node name="CameraFollowPoint" parent="Car" index="6"]
 transform = Transform3D(-1, 0, -8.74228e-08, -3.12697e-08, 0.933843, 0.357684, 8.16391e-08, 0.357684, -0.933843, 0, 1.48636, -2.93594)
 
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("camera_preview", "follow_point")]
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("cameraPreview", "followPoint", "previewUi")]
 transform = Transform3D(-0.995019, -1.11202e-08, -0.0996845, -0.0423712, 0.905169, 0.422936, 0.0902313, 0.425053, -0.90066, -24.6506, 25.5741, -51.8213)
 script = ExtResource("7_icp1j")
-camera_preview = NodePath("../CameraPreview")
-follow_point = NodePath("../Car/CameraFollowPoint")
+cameraPreview = NodePath("../CameraPreview")
+followPoint = NodePath("../Car/CameraFollowPoint")
+previewUi = NodePath("../PreviewUi")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0wfyh")
@@ -150,13 +152,22 @@ checkPointManager = NodePath("../CheckPointManager")
 visible = false
 timeManager = NodePath("../TimeManager")
 
+[node name="StartCounter" parent="." node_paths=PackedStringArray("car", "timeManager") instance=ExtResource("14_bbgq5")]
+visible = false
+car = NodePath("../Car")
+timeManager = NodePath("../TimeManager")
+
+[node name="PreviewUi" parent="." instance=ExtResource("15_u4oya")]
+
 [node name="CheckPointManager" parent="." instance=ExtResource("14_p1hka")]
 
 [node name="TimeManager" parent="." instance=ExtResource("15_4u804")]
+process_mode = 4
 
 [node name="DirectionalLight3D" parent="." instance=ExtResource("15_8cdjg")]
 transform = Transform3D(0.903903, -0.229357, 0.361046, 0, 0.844085, 0.53621, -0.427737, -0.484682, 0.762971, 13.1045, 0, -3.82377)
 
+[connection signal="preview_ended" from="Camera3D" to="StartCounter" method="_on_camera_3d_preview_ended"]
 [connection signal="end_track" from="CheckPointManager" to="WinMenu" method="_on_check_point_manager_end_track"]
 
 [editable path="Car"]
